@@ -1,0 +1,552 @@
+ec2-user:~/environment $ aws dynamodb create-table \
+>     --table-name Music \
+>     --attribute-definitions \
+>         AttributeName=Artist,AttributeType=S \
+>         AttributeName=SongTitle,AttributeType=S \
+>     --key-schema \
+>         AttributeName=Artist,KeyType=HASH \
+>         AttributeName=SongTitle,KeyType=RANGE \
+>     --provisioned-throughput \
+>         ReadCapacityUnits=10,WriteCapacityUnits=5
+{
+    "TableDescription": {
+        "TableArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music", 
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "Artist", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "SongTitle", 
+                "AttributeType": "S"
+            }
+        ], 
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0, 
+            "WriteCapacityUnits": 5, 
+            "ReadCapacityUnits": 10
+        }, 
+        "TableSizeBytes": 0, 
+        "TableName": "Music", 
+        "TableStatus": "CREATING", 
+        "TableId": "2fb5b1ae-d461-425d-b68f-de8293270731", 
+        "KeySchema": [
+            {
+                "KeyType": "HASH", 
+                "AttributeName": "Artist"
+            }, 
+            {
+                "KeyType": "RANGE", 
+                "AttributeName": "SongTitle"
+            }
+        ], 
+        "ItemCount": 0, 
+        "CreationDateTime": 1681345485.371
+    }
+}
+ec2-user:~/environment $ aws dynamodb put-item \
+>     --table-name Music \
+>     --item file://itemmusic.json \
+> aws dynamodb batch-write-item \
+>     --request-items file://batchmusic.json
+Note: AWS CLI version 2, the latest major version of the AWS CLI, is now stable and recommended for general use. For more information, see the AWS CLI version 2 installation instructions at: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+
+Unknown options: dynamodb, batch-write-item, --request-items, file://batchmusic.json, aws
+ec2-user:~/environment $ aws dynamodb put-item \
+>     --table-name Music \
+>     --item file://itemmusic.json \
+> 
+
+Error parsing parameter '--item': Unable to load paramfile file://itemmusic.json: [Errno 2] No such file or directory: 'itemmusic.json'
+ec2-user:~/environment $ aws dynamodb put-item \
+>     --table-name Music \
+>     --item file://itemmusic.json \
+> 
+
+Error parsing parameter '--item': Unable to load paramfile file://itemmusic.json: [Errno 2] No such file or directory: 'itemmusic.json'
+ec2-user:~/environment $ aws dynamodb put-item \
+>     --table-name Music \
+>     --item file://itemmusic.json \
+> 
+
+Error parsing parameter '--item': Unable to load paramfile file://itemmusic.json: [Errno 2] No such file or directory: 'itemmusic.json'
+ec2-user:~/environment $ aws dynamodb update-table \
+>     --table-name Music \
+>     --attribute-definitions AttributeName=AlbumTitle,AttributeType=S \
+>     --global-secondary-index-updates \
+>         "[{\"Create\":{\"IndexName\": \"AlbumTitle-index\",\"KeySchema\":[{\"AttributeName\":\"AlbumTitle\",\"KeyType\":\"HASH\"}], \
+>         \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
+{
+    "TableDescription": {
+        "TableArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music", 
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "AlbumTitle", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "Artist", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "SongTitle", 
+                "AttributeType": "S"
+            }
+        ], 
+        "GlobalSecondaryIndexes": [
+            {
+                "IndexSizeBytes": 0, 
+                "IndexName": "AlbumTitle-index", 
+                "Projection": {
+                    "ProjectionType": "ALL"
+                }, 
+                "ProvisionedThroughput": {
+                    "NumberOfDecreasesToday": 0, 
+                    "WriteCapacityUnits": 5, 
+                    "ReadCapacityUnits": 10
+                }, 
+                "IndexStatus": "CREATING", 
+                "Backfilling": false, 
+                "KeySchema": [
+                    {
+                        "KeyType": "HASH", 
+                        "AttributeName": "AlbumTitle"
+                    }
+                ], 
+                "IndexArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music/index/AlbumTitle-index", 
+                "ItemCount": 0
+            }
+        ], 
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0, 
+            "WriteCapacityUnits": 5, 
+            "ReadCapacityUnits": 10
+        }, 
+        "TableSizeBytes": 0, 
+        "TableName": "Music", 
+        "TableStatus": "UPDATING", 
+        "TableId": "2fb5b1ae-d461-425d-b68f-de8293270731", 
+        "KeySchema": [
+            {
+                "KeyType": "HASH", 
+                "AttributeName": "Artist"
+            }, 
+            {
+                "KeyType": "RANGE", 
+                "AttributeName": "SongTitle"
+            }
+        ], 
+        "ItemCount": 0, 
+        "CreationDateTime": 1681345485.371
+    }
+}
+ec2-user:~/environment $ aws dynamodb update-table \
+>     --table-name Music \
+>     --attribute-definitions\
+>         AttributeName=Artist,AttributeType=S \
+>         AttributeName=AlbumTitle,AttributeType=S \
+>     --global-secondary-index-updates \
+>         "[{\"Create\":{\"IndexName\": \"ArtistAlbumTitle-index\",\"KeySchema\":[{\"AttributeName\":\"Artist\",\"KeyType\":\"HASH\"}, {\"AttributeName\":\"AlbumTitle\",\"KeyType\":\"RANGE\"}], \
+>         \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
+{
+    "TableDescription": {
+        "TableArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music", 
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "AlbumTitle", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "Artist", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "SongTitle", 
+                "AttributeType": "S"
+            }
+        ], 
+        "GlobalSecondaryIndexes": [
+            {
+                "IndexSizeBytes": 0, 
+                "IndexName": "AlbumTitle-index", 
+                "Projection": {
+                    "ProjectionType": "ALL"
+                }, 
+                "ProvisionedThroughput": {
+                    "NumberOfDecreasesToday": 0, 
+                    "WriteCapacityUnits": 5, 
+                    "ReadCapacityUnits": 10
+                }, 
+                "IndexStatus": "ACTIVE", 
+                "KeySchema": [
+                    {
+                        "KeyType": "HASH", 
+                        "AttributeName": "AlbumTitle"
+                    }
+                ], 
+                "IndexArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music/index/AlbumTitle-index", 
+                "ItemCount": 0
+            }, 
+            {
+                "IndexSizeBytes": 0, 
+                "IndexName": "ArtistAlbumTitle-index", 
+                "Projection": {
+                    "ProjectionType": "ALL"
+                }, 
+                "ProvisionedThroughput": {
+                    "NumberOfDecreasesToday": 0, 
+                    "WriteCapacityUnits": 5, 
+                    "ReadCapacityUnits": 10
+                }, 
+                "IndexStatus": "CREATING", 
+                "Backfilling": false, 
+                "KeySchema": [
+                    {
+                        "KeyType": "HASH", 
+                        "AttributeName": "Artist"
+                    }, 
+                    {
+                        "KeyType": "RANGE", 
+                        "AttributeName": "AlbumTitle"
+                    }
+                ], 
+                "IndexArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music/index/ArtistAlbumTitle-index", 
+                "ItemCount": 0
+            }
+        ], 
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0, 
+            "WriteCapacityUnits": 5, 
+            "ReadCapacityUnits": 10
+        }, 
+        "TableSizeBytes": 0, 
+        "TableName": "Music", 
+        "TableStatus": "UPDATING", 
+        "TableId": "2fb5b1ae-d461-425d-b68f-de8293270731", 
+        "KeySchema": [
+            {
+                "KeyType": "HASH", 
+                "AttributeName": "Artist"
+            }, 
+            {
+                "KeyType": "RANGE", 
+                "AttributeName": "SongTitle"
+            }
+        ], 
+        "ItemCount": 0, 
+        "CreationDateTime": 1681345485.371
+    }
+}
+ec2-user:~/environment $ aws dynamodb update-table \
+>     --table-name Music \
+>     --attribute-definitions\
+>         AttributeName=SongTitle,AttributeType=S \
+>         AttributeName=SongYear,AttributeType=S \
+>     --global-secondary-index-updates \
+>         "[{\"Create\":{\"IndexName\": \"SongTitleYear-index\",\"KeySchema\":[{\"AttributeName\":\"SongTitle\",\"KeyType\":\"HASH\"}, {\"AttributeName\":\"SongYear\",\"KeyType\":\"RANGE\"}], \
+>         \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
+{
+    "TableDescription": {
+        "TableArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music", 
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "AlbumTitle", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "Artist", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "SongTitle", 
+                "AttributeType": "S"
+            }, 
+            {
+                "AttributeName": "SongYear", 
+                "AttributeType": "S"
+            }
+        ], 
+        "GlobalSecondaryIndexes": [
+            {
+                "IndexSizeBytes": 0, 
+                "IndexName": "AlbumTitle-index", 
+                "Projection": {
+                    "ProjectionType": "ALL"
+                }, 
+                "ProvisionedThroughput": {
+                    "NumberOfDecreasesToday": 0, 
+                    "WriteCapacityUnits": 5, 
+                    "ReadCapacityUnits": 10
+                }, 
+                "IndexStatus": "ACTIVE", 
+                "KeySchema": [
+                    {
+                        "KeyType": "HASH", 
+                        "AttributeName": "AlbumTitle"
+                    }
+                ], 
+                "IndexArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music/index/AlbumTitle-index", 
+                "ItemCount": 0
+            }, 
+            {
+                "IndexSizeBytes": 0, 
+                "IndexName": "ArtistAlbumTitle-index", 
+                "Projection": {
+                    "ProjectionType": "ALL"
+                }, 
+                "ProvisionedThroughput": {
+                    "NumberOfDecreasesToday": 0, 
+                    "WriteCapacityUnits": 5, 
+                    "ReadCapacityUnits": 10
+                }, 
+                "IndexStatus": "ACTIVE", 
+                "KeySchema": [
+                    {
+                        "KeyType": "HASH", 
+                        "AttributeName": "Artist"
+                    }, 
+                    {
+                        "KeyType": "RANGE", 
+                        "AttributeName": "AlbumTitle"
+                    }
+                ], 
+                "IndexArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music/index/ArtistAlbumTitle-index", 
+                "ItemCount": 0
+            }, 
+            {
+                "IndexSizeBytes": 0, 
+                "IndexName": "SongTitleYear-index", 
+                "Projection": {
+                    "ProjectionType": "ALL"
+                }, 
+                "ProvisionedThroughput": {
+                    "NumberOfDecreasesToday": 0, 
+                    "WriteCapacityUnits": 5, 
+                    "ReadCapacityUnits": 10
+                }, 
+                "IndexStatus": "CREATING", 
+                "Backfilling": false, 
+                "KeySchema": [
+                    {
+                        "KeyType": "HASH", 
+                        "AttributeName": "SongTitle"
+                    }, 
+                    {
+                        "KeyType": "RANGE", 
+                        "AttributeName": "SongYear"
+                    }
+                ], 
+                "IndexArn": "arn:aws:dynamodb:sa-east-1:409933424712:table/Music/index/SongTitleYear-index", 
+                "ItemCount": 0
+            }
+        ], 
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0, 
+            "WriteCapacityUnits": 5, 
+            "ReadCapacityUnits": 10
+        }, 
+        "TableSizeBytes": 0, 
+        "TableName": "Music", 
+        "TableStatus": "UPDATING", 
+        "TableId": "2fb5b1ae-d461-425d-b68f-de8293270731", 
+        "KeySchema": [
+            {
+                "KeyType": "HASH", 
+                "AttributeName": "Artist"
+            }, 
+            {
+                "KeyType": "RANGE", 
+                "AttributeName": "SongTitle"
+            }
+        ], 
+        "ItemCount": 0, 
+        "CreationDateTime": 1681345485.371
+    }
+}
+ec2-user:~/environment $ aws dynamodb query \
+>     --table-name Music \
+>     --key-condition-expression "Artist = :artist" \
+>     --expression-attribute-values  '{":artist":{"S":"Iron Maiden"}}'
+{
+    "Count": 4, 
+    "Items": [
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark"
+            }, 
+            "SongTitle": {
+                "S": "Chains of Misery"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }, 
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark Tour"
+            }, 
+            "SongTitle": {
+                "S": "Fear of the Dark"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }, 
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark Live"
+            }, 
+            "SongTitle": {
+                "S": "Wasting Love"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }, 
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark"
+            }, 
+            "SongTitle": {
+                "S": "Weekend Warrior"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }
+    ], 
+    "ScannedCount": 4, 
+    "ConsumedCapacity": null
+}
+ec2-user:~/environment $ aws dynamodb query \
+>     --table-name Music \
+>     --key-condition-expression "Artist = :artist and SongTitle = :title" \
+>     --expression-attribute-values file://keyconditions.json
+
+Error parsing parameter '--expression-attribute-values': Unable to load paramfile file://keyconditions.json: [Errno 2] No such file or directory: 'keyconditions.json'
+ec2-user:~/environment $ aws dynamodb query \
+>     --table-name Music \
+>     --index-name AlbumTitle-index \
+>     --key-condition-expression "AlbumTitle = :name" \
+>     --expression-attribute-values  '{":name":{"S":"Fear of the Dark"}}'
+{
+    "Count": 2, 
+    "Items": [
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark"
+            }, 
+            "SongTitle": {
+                "S": "Weekend Warrior"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }, 
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark"
+            }, 
+            "SongTitle": {
+                "S": "Chains of Misery"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }
+    ], 
+    "ScannedCount": 2, 
+    "ConsumedCapacity": null
+}
+ec2-user:~/environment $ aws dynamodb query \
+>     --table-name Music \
+>     --index-name ArtistAlbumTitle-index \
+>     --key-condition-expression "Artist = :v_artist and AlbumTitle = :v_title" \
+>     --expression-attribute-values  '{":v_artist":{"S":"Iron Maiden"},":v_title":{"S":"Fear of the Dark"} }'
+{
+    "Count": 2, 
+    "Items": [
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark"
+            }, 
+            "SongTitle": {
+                "S": "Chains of Misery"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }, 
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark"
+            }, 
+            "SongTitle": {
+                "S": "Weekend Warrior"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }
+    ], 
+    "ScannedCount": 2, 
+    "ConsumedCapacity": null
+}
+ec2-user:~/environment $ aws dynamodb query \
+>     --table-name Music \
+>     --index-name SongTitleYear-index \
+>     --key-condition-expression "SongTitle = :v_song and SongYear = :v_year" \
+>     --expression-attribute-values  '{":v_song":{"S":"Wasting Love"},":v_year":{"S":"1992"} }'
+{
+    "Count": 1, 
+    "Items": [
+        {
+            "SongYear": {
+                "S": "1992"
+            }, 
+            "AlbumTitle": {
+                "S": "Fear of the Dark Live"
+            }, 
+            "SongTitle": {
+                "S": "Wasting Love"
+            }, 
+            "Artist": {
+                "S": "Iron Maiden"
+            }
+        }
+    ], 
+    "ScannedCount": 1, 
+    "ConsumedCapacity": null
+}
+ec2-user:~/environment $ 
